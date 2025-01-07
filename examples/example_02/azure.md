@@ -4,7 +4,7 @@
 
 # AI Backend
 
-azure
+azure (chatgpt-4o)
 
 # User Request
 

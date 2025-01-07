@@ -72,17 +72,17 @@ To run with a single command, e.g.
 
 > tgai Write a Christmas song
 
-Result of this example: https://github.com/eliranwong/teamgenai/blob/main/example_01.md
+Result of this example: https://github.com/eliranwong/teamgenai/blob/main/examples/example_01.md
 
 > tgai Write a comprehensive introduction to the book of Daniel in the bible
 
-Result of this example: https://github.com/eliranwong/teamgenai/blob/main/example_02.md
+Results of this example, comparing different AI backends: https://github.com/eliranwong/teamgenai/tree/main/examples/example_02
 
 # Development Road Map
 
 1. Creat an initial version that support group discussion between AI agents (Done! version 0.0.2)
 2. Support backup and reuse of generated agent configurations (Done! version 0.0.2)
-3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) (Partially done! Tested backends: `openai`, `github`, `azure`)
+3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) (Partially done! Tested backends: `openai`, `github`, `azure`, `anthropic`, `ollama`, `mistral`, `vertexai`, `googleai`, `groq`)
 4. Support specifying different AI backends or models for running agent creation, assignment and responses
 5. Support customisation of core system messages that run TeamGen AI (Done! version 0.0.3)
 6. Support code generation and task execution

@@ -38,9 +38,10 @@ def main():
         config.tempChatSystemMessage = readTextFile(system_create_agents_file)
         create_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages, keepSystemMessage=False) # use system: create_agents
         agents = [i.rstrip() for i in create_agents_response.split("```") if re.search("^agent [0-9]", i)]
+    notCalled = [i for i in range(1, len(agents)+1)]
 
     # agent description
-    agents_description = "```" + "```\n\n```".join(agents) + "```"
+    agents_description = "```" + "\n```\n\n```".join(agents) + "\n```"
     print("# Agents Generated")
     print(agents_description, "\n")
 
@@ -53,6 +54,8 @@ def main():
     while len(agents) >= agent > 0:
         config.tempChatSystemMessage = assign_agents
         assign_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages, keepSystemMessage=False) # use system: assign_agents
+        if assign_agents_response is None:
+            assign_agents_response = ""
 
         print("# Assignment")
         print(assign_agents_response, "\n")
@@ -60,36 +63,43 @@ def main():
         p = r"The best agent to work next is agent ([0-9]+?)[^0-9]"
         if found := re.search(p, assign_agents_response):
             agent = int(found.group(1))
-            if agent == 0:
-                break
+            if agent > len(agents):
+                agent = 0
+            elif agent in notCalled:
+                notCalled.remove(agent)
+        elif notCalled:
+            agent = notCalled[0]
+            del notCalled[0]
+        else:
+            agent = 0
+        if agent == 0:
+            break
 
-            config.tempChatSystemMessage = re.sub("^agent [0-9]+?\n", "", agents[agent - 1]).replace("##", "#") + f"""# User request
+        config.tempChatSystemMessage = re.sub("^agent [0-9]+?\n", "", agents[agent - 1]).replace("##", "#") + f"""# User request
 {userRequest}
 # Instruction
 1. Examine carefully what has been done or dicussed so far toward resolving the user request and think about what is the best to do next.
 2. On top of what has been done or discussed, contribute your expertise to work toward resolving the user request."""
-            try:
-                agent_role = re.search("""# Role(.+?)# Job description""", config.tempChatSystemMessage, re.DOTALL).group(1).strip()
-            except:
-                agent_role = f"Agent {agent}"
-            
-            print(f"# Calling Agent {agent} ...")
-            print(config.tempChatSystemMessage, "\n")
+        try:
+            agent_role = re.search("""# Role(.+?)# Job description""", config.tempChatSystemMessage, re.DOTALL).group(1).strip()
+        except:
+            agent_role = f"Agent {agent}"
+        agent_role = re.sub(r"\.$", "", agent_role)
+        
+        print(f"# Calling Agent {agent} ...")
+        print(config.tempChatSystemMessage, "\n")
 
-            if len(config.currentMessages) == 2: # at the beginning
-                config.currentMessages.append({
-                    "role": "assistant",
-                    "content": "# Progress\nA team of AI agents has been created to resolve your requests. Pending assignments of the AI agents to work on your request...",
-                })
+        if len(config.currentMessages) == 2: # at the beginning
             config.currentMessages.append({
-                "role": "user",
-                "content": f"# Assignment\n{agent_role} It is your turn to contribute.",
+                "role": "assistant",
+                "content": "# Progress\nA team of AI agents has been created to resolve your requests. Pending assignments of the AI agents to work on your request...",
             })
-            completion = CallLLM.regularCall(config.currentMessages)
-            StreamingWordWrapper().streamOutputs(None, completion, openai=openai)
-        else:
-            print("Group discussion terminated unexpectedly.")
-            agent = 0
+        config.currentMessages.append({
+            "role": "user",
+            "content": f'''# Assignment\n{agent_role}. It is your turn to contribute.''',
+        })
+        completion = CallLLM.regularCall(config.currentMessages)
+        StreamingWordWrapper().streamOutputs(None, completion, openai=openai)
 
     # Conclusion
     config.currentMessages.append({
