@@ -10,7 +10,7 @@ Upon receiving a user request, TeamGen AI generates tailor-made teams of AI agen
 
 # Latest Features
 
-Read https://github.com/eliranwong/teamgenai/latest.md
+Read https://github.com/eliranwong/teamgenai/blob/main/latest.md
 
 # Requirements
 
@@ -72,11 +72,11 @@ To run with a single command, e.g.
 
 > tgai Write a Christmas song
 
-Result of this example: https://github.com/eliranwong/teamgenai/example_01.md
+Result of this example: https://github.com/eliranwong/teamgenai/blob/main/example_01.md
 
 > tgai Write a comprehensive introduction to the book of Daniel in the bible
 
-Result of this example: https://github.com/eliranwong/teamgenai/example_02.md
+Result of this example: https://github.com/eliranwong/teamgenai/blob/main/example_02.md
 
 # Development Road Map
 

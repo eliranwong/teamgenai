@@ -1,7 +1,7 @@
 # 0.0.3
 
 * support custom system messages for creating agents, assigning agents and writing the final answer.
-    Read https://github.com/eliranwong/teamgenai/teamgenai/docs/Custom_System_Messages.md
+    Read https://github.com/eliranwong/teamgenai/blob/main/teamgenai/docs/Custom_System_Messages.md
 
 # 0.0.2
 
