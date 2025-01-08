@@ -4,7 +4,7 @@
 
 # AI Backend
 
-ollama (llama3.3:70b; num_ctx=2192; num_predict=-1)
+ollama (llama3.3:70b; num_ctx=8192; num_predict=-1)
 
 # User Request
 
