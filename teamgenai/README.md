@@ -14,7 +14,7 @@ Read https://github.com/eliranwong/teamgenai/blob/main/latest.md
 
 # Requirements
 
-To run TeamGen AI, you need to install and setup [ToolMate AI](https://github.com/eliranwong/toolmate) (version 0.6.30 or later) FIRST!
+To run TeamGen AI, you need to install and setup [ToolMate AI](https://github.com/eliranwong/toolmate) (version 0.6.34 or later) FIRST!
 
 To install:
 
@@ -82,7 +82,7 @@ Results of this example, comparing different AI backends: https://github.com/eli
 
 1. Creat an initial version that support group discussion between AI agents (Done! version 0.0.2)
 2. Support backup and reuse of generated agent configurations (Done! version 0.0.2)
-3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) (Partially done! Tested backends: `openai`, `github`, `azure`, `anthropic`, `ollama`, `mistral`, `vertexai`, `googleai`, `groq`)
+3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) (Partially done! Tested backends: `openai`, `github`, `azure`, `anthropic`, `ollama`, `mistral`, `vertexai`, `googleai`, `genai`, `groq`)
 4. Support specifying different AI backends or models for running agent creation, assignment and responses
 5. Support customisation of core system messages that run TeamGen AI (Done! version 0.0.3)
 6. Support code generation and task execution
