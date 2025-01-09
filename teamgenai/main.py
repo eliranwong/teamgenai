@@ -35,10 +35,22 @@ def main():
     else: # generate a team of AI agents
         custom_system_create_agents_file = os.path.join(config.localStorage, "teamgenai", "system", "core", "create_agents.txt")
         system_create_agents_file = custom_system_create_agents_file if os.path.isfile(custom_system_create_agents_file) else os.path.join(packageFolder, "system", "core", "create_agents.txt")
-        config.tempChatSystemMessage = readTextFile(system_create_agents_file)
-        create_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages, keepSystemMessage=False) # use system: create_agents
+        config.tempChatSystemMessage = readTextFile(system_create_agents_file) # use system: create_agents
+        create_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages, keepSystemMessage=False)
+        create_agents_response = re.sub("```\n[Aa]gent", "```agent", create_agents_response)
+        create_agents_response = re.sub("^[#]+? [Aa]gent", "```agent", create_agents_response, flags=re.M)
         agents = [i.rstrip() for i in create_agents_response.split("```") if re.search("^agent [0-9]", i)]
-    notCalled = [i for i in range(1, len(agents)+1)]
+    if not agents:
+        if config.developer:
+            print(f"Agents not found in:\n\n{create_agents_response}")
+        else:
+            print("Agents not found!")
+        exit(1)
+    notCalled = [i for i in range(1, len(agents)+1)] # a list of agents that haven't been called
+    config.currentMessages.append({
+        "role": "assistant",
+        "content": "# Progress\nA team of AI agents has been created to resolve your requests, and they are waiting for your call to contribute in turn.",
+    })
 
     # agent description
     agents_description = "```" + "\n```\n\n```".join(agents) + "\n```"
@@ -52,15 +64,15 @@ def main():
     agent = 1
 
     while len(agents) >= agent > 0:
-        config.tempChatSystemMessage = assign_agents
-        assign_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages, keepSystemMessage=False) # use system: assign_agents
+        config.tempChatSystemMessage = assign_agents # use system: assign_agents
+        assign_agents_response = CallLLM.getSingleChatResponse(None, messages=config.currentMessages+[{"role": "user", "content": "Who is the best agent to contribute next?"}], keepSystemMessage=False)
         if assign_agents_response is None:
             assign_agents_response = ""
 
         print("# Assignment")
         print(assign_agents_response, "\n")
 
-        p = r"The best agent to work next is agent ([0-9]+?)[^0-9]"
+        p = r"The best agent to contribute next is agent ([0-9]+?)[^0-9]"
         if found := re.search(p, assign_agents_response):
             agent = int(found.group(1))
             if agent > len(agents):
@@ -68,10 +80,11 @@ def main():
             elif agent in notCalled:
                 notCalled.remove(agent)
         elif notCalled:
-            agent = notCalled[0]
-            del notCalled[0]
+            agent = notCalled.pop(0)
         else:
             agent = 0
+        if agent == 0 and notCalled:
+            agent = notCalled.pop(0)
         if agent == 0:
             break
 
@@ -84,19 +97,14 @@ def main():
             agent_role = re.search("""# Role(.+?)# Job description""", config.tempChatSystemMessage, re.DOTALL).group(1).strip()
         except:
             agent_role = f"Agent {agent}"
-        agent_role = re.sub(r"\.$", "", agent_role)
+        agent_role = re.sub("^You are (a|an|the) (.*?)[.]*$", r"\2", agent_role)
         
         print(f"# Calling Agent {agent} ...")
         print(config.tempChatSystemMessage, "\n")
 
-        if len(config.currentMessages) == 2: # at the beginning
-            config.currentMessages.append({
-                "role": "assistant",
-                "content": "# Progress\nA team of AI agents has been created to resolve your requests. Pending assignments of the AI agents to work on your request...",
-            })
         config.currentMessages.append({
             "role": "user",
-            "content": f'''# Assignment\n{agent_role}. It is your turn to contribute.''',
+            "content": f'''# Change Speaker\nThe best agent to contribute next is agent {agent}.\n{agent_role}, It is your turn to contribute.''',
         })
         completion = CallLLM.regularCall(config.currentMessages)
         StreamingWordWrapper().streamOutputs(None, completion, openai=openai)

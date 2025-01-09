@@ -1,12 +1,18 @@
 # TeamGen AI
 
-TeamGen AI automates the creation of AI agent teams to address user requests.
+TeamGen AI, developed by [Eliran Wong](https://github.com/eliranwong), automates the creation of AI agent teams to address user requests.
 
-Upon receiving a user request, TeamGen AI generates tailor-made teams of AI agents that collaborate to resolve the request.
+# How does it work?
 
-# Developer
+Upon receiving a user request, TeamGen AI generates a team of AI agents, each with a distinct role. During each turn of the group discussion, TeamGen AI evaluates the progress and assigns the most suitable agent to contribute. Once all agents have provided their expertise and the request is fully addressed, TeamGen AI engages the final answer writer to deliver the response to the user.
 
-[Eliran Wong](https://github.com/eliranwong)
+# Supported AI Backends
+
+The following AI Backends are supported and tested:
+
+`anthropic`, `azure`, `genai`, `googleai`, `groq`, `llamacppserver`, `mistral`, `ollama`, `openai`, `xai`
+
+Compare at: https://github.com/eliranwong/teamgenai/tree/main/examples/example_02
 
 # Latest Features
 
@@ -58,7 +64,7 @@ tmsetup -m
 
 # Run TeamGen AI
 
-Command: `tgai` 
+Run TeamGen AI with command: `tgai` 
 
 For CLI options run:
 
@@ -82,7 +88,7 @@ Results of this example, comparing different AI backends: https://github.com/eli
 
 1. Creat an initial version that support group discussion between AI agents (Done! version 0.0.2)
 2. Support backup and reuse of generated agent configurations (Done! version 0.0.2)
-3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) (Partially done! Tested backends: `openai`, `github`, `azure`, `anthropic`, `ollama`, `mistral`, `vertexai`, `googleai`, `genai`, `groq`)
+3. Test all the [AI backends supported by ToolMate AI](https://github.com/eliranwong/toolmate#ai-backends-and-models) ([Done!](https://github.com/eliranwong/teamgenai/tree/main/examples/example_02))
 4. Support specifying different AI backends or models for running agent creation, assignment and responses
 5. Support customisation of core system messages that run TeamGen AI (Done! version 0.0.3)
 6. Support code generation and task execution
