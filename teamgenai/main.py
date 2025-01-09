@@ -1,4 +1,4 @@
-from toolmate import config, readTextFile, writeTextFile
+from toolmate import config, readTextFile, writeTextFile, changeModel, changeBackendAndModel, getCurrentModel
 from toolmate.eTextEdit import launch
 from toolmate.utils.call_llm import CallLLM
 from toolmate.utils.streaming_word_wrapper import StreamingWordWrapper
@@ -7,15 +7,30 @@ from teamgenai.utils.shared_utils import saveRecord
 import os, re, argparse, sys
 
 def main():
+    supportedBackends = ['anthropic', 'azure', 'genai', 'googleai', 'groq', 'llamacpppython', 'llamacppserver', 'mistral', 'ollama', 'openai', 'xai']
+
     parser = argparse.ArgumentParser(description = """TeamGen AI CLI options.""")
     parser.add_argument("default", nargs="*", default=None, help="user request")
     parser.add_argument("-a", "--agents", action="store", dest="agents", help="the file path of a previously saved copy of agents' configurations")
+    parser.add_argument('-b', '--backend', action='store', dest='backend', help=f"""specify an AI backend; supported backends: '{"', '".join(supportedBackends)}'""")
     parser.add_argument('-ed', '--editor', action='store_true', dest='editor', help=f"""edit instruction with text editor; configured editor: {config.customTextEditor if config.customTextEditor else "etextedit"}""")
     parser.add_argument('-edcmd', '--editorcommand', action='store', dest='editorcommand', help="specify editor command; edit instruction with this editor command instead of configured editor")
+    parser.add_argument('-m', '--model', action='store', dest='model', help="specify an AI model")
     args = parser.parse_args()
 
-    print("# Running TeamGen AI ...")
-    print(f"# AI Backend\n{config.llmInterface}\n")
+    print("# Running TeamGen AI ...\n")
+
+    if args.backend and not args.backend.lower() in supportedBackends:
+        print(f"""Backend option invalid! Supported backends are '{"', '".join(supportedBackends)}'""")
+        args.backend = None
+    if args.model and args.backend:
+        changeBackendAndModel(args.backend, args.model)
+    if args.model and not args.backend:
+        changeModel(args.model)
+    elif args.backend:
+        config.llmInterface = args.backend.lower()
+
+    print(f"# AI Backend\n{config.llmInterface} ({getCurrentModel()})\n")
 
     # streaming parameter
     openai = True if config.llmInterface in ("openai", "letmedoit", "github", "azure", "googleai", "xai", "groq", "mistral", "llamacppserver") else False
@@ -110,13 +125,13 @@ def main():
         except:
             agent_role = f"Agent {agent}"
         agent_role = re.sub("^You are (a|an|the) (.*?)[.]*$", r"\2", agent_role)
-        
+
         print(f"# Calling Agent {agent} ...")
         print(config.tempChatSystemMessage, "\n")
 
         config.currentMessages.append({
             "role": "user",
-            "content": f'''# Change Speaker\nThe best agent to contribute next is agent {agent}.\n{agent_role}, It is your turn to contribute.''',
+            "content": f'''# Change Speaker\nThe best agent to contribute next is agent {agent}.\n{agent_role}, it is your turn to contribute.''',
         })
         completion = CallLLM.regularCall(config.currentMessages)
         StreamingWordWrapper().streamOutputs(None, completion, openai=openai)

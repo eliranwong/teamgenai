@@ -1,3 +1,7 @@
+# 0.0.14
+
+* added CLI options for specifying AI backends and models
+
 # 0.0.11-0.0.13
 
 * support external editor for editing user request
