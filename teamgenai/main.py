@@ -1,18 +1,17 @@
-from toolmate import config, readTextFile
+from toolmate import config, readTextFile, writeTextFile
+from toolmate.eTextEdit import launch
 from toolmate.utils.call_llm import CallLLM
 from toolmate.utils.streaming_word_wrapper import StreamingWordWrapper
 from teamgenai import packageFolder
 from teamgenai.utils.shared_utils import saveRecord
 import os, re, argparse, sys
-try:
-    import readline
-except:
-    pass
 
 def main():
     parser = argparse.ArgumentParser(description = """TeamGen AI CLI options.""")
     parser.add_argument("default", nargs="*", default=None, help="user request")
     parser.add_argument("-a", "--agents", action="store", dest="agents", help="the file path of a previously saved copy of agents' configurations")
+    parser.add_argument('-ed', '--editor', action='store_true', dest='editor', help=f"""edit instruction with text editor; configured editor: {config.customTextEditor if config.customTextEditor else "etextedit"}""")
+    parser.add_argument('-edcmd', '--editorcommand', action='store', dest='editorcommand', help="specify editor command; edit instruction with this editor command instead of configured editor")
     args = parser.parse_args()
 
     print("# Running TeamGen AI ...")
@@ -24,12 +23,22 @@ def main():
     # user request
     stdin_text = sys.stdin.read() if not sys.stdin.isatty() else ""
     userRequest = " ".join(args.default) if args.default else ""
-    if userRequest := userRequest.strip():
-        if stdin_text:
-            userRequest += f" {stdin_text}"
-        print(f"# User request\n{userRequest}\n")
-    elif not stdin_text:
-        userRequest = input("Enter your request: ")
+    userRequest = userRequest.strip()
+    if stdin_text:
+        userRequest += f" {stdin_text}"
+    # edit request with text editor
+    if not userRequest or args.editor or args.editorcommand:
+        if config.customTextEditor or args.editorcommand:
+            tempTextFile = os.path.join(config.toolMateAIFolder, "temp", "edit_request")
+            writeTextFile(tempTextFile, userRequest)
+            customTextEditor = args.editorcommand if args.editorcommand else config.customTextEditor
+            os.system(f"{customTextEditor} {tempTextFile}")
+            userRequest = readTextFile(tempTextFile)
+        else:
+            userRequest = launch(input_text=userRequest, filename=None, exitWithoutSaving=True, customTitle="Edit instruction below; exit when you finish")
+    # display user request
+    print(f"# User request\n{userRequest}\n")
+    # set initial message chain
     config.currentMessages = [{"role": "system", "content": ""}, {"role": "user", "content": userRequest}]
 
     # agent configurations

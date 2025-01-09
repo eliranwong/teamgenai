@@ -71,7 +71,7 @@ For CLI options run:
 
 > tgai -h
 
-To enter your request in interactive mode:
+To enter your request in editor mode:
 
 > tgai
 

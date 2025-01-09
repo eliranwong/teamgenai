@@ -1,3 +1,7 @@
+# 0.0.11-0.0.13
+
+* support external editor for editing user request
+
 # 0.0.10
 
 * support standard input

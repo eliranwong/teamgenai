@@ -4,7 +4,7 @@
 
 # AI Backend
 
-xai
+xai (grok-2-latest)
 
 # User Request
 
