@@ -35,7 +35,7 @@ open(os.path.join(package, "config.py"), "w").close()
 # https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/
 setup(
     name=package,
-    version="0.0.9",
+    version="0.0.10",
     python_requires=">=3.8, <3.13",
     description=f"TeamGen AI, developed by Eliran Wong, automates the creation of AI agent teams to address user requests.",
     long_description=long_description,

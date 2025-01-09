@@ -3,7 +3,7 @@ from toolmate.utils.call_llm import CallLLM
 from toolmate.utils.streaming_word_wrapper import StreamingWordWrapper
 from teamgenai import packageFolder
 from teamgenai.utils.shared_utils import saveRecord
-import os, re, argparse
+import os, re, argparse, sys
 try:
     import readline
 except:
@@ -22,10 +22,13 @@ def main():
     openai = True if config.llmInterface in ("openai", "letmedoit", "github", "azure", "googleai", "xai", "groq", "mistral", "llamacppserver") else False
 
     # user request
+    stdin_text = sys.stdin.read() if not sys.stdin.isatty() else ""
     userRequest = " ".join(args.default) if args.default else ""
     if userRequest := userRequest.strip():
+        if stdin_text:
+            userRequest += f" {stdin_text}"
         print(f"# User request\n{userRequest}\n")
-    else:
+    elif not stdin_text:
         userRequest = input("Enter your request: ")
     config.currentMessages = [{"role": "system", "content": ""}, {"role": "user", "content": userRequest}]
 

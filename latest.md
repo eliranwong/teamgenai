@@ -1,3 +1,13 @@
+# 0.0.10
+
+* support standard input
+
+# 0.0.4-0.0.9
+
+* Updated to support various backends:
+
+`anthropic`, `azure`, `genai`, `googleai`, `groq`, `llamacppserver`, `mistral`, `ollama`, `openai`, `xai`
+
 # 0.0.3
 
 * support custom system messages for creating agents, assigning agents and writing the final answer.

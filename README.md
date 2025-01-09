@@ -4,7 +4,8 @@ TeamGen AI, developed by [Eliran Wong](https://github.com/eliranwong), automates
 
 # How does it work?
 
-Upon receiving a user request, TeamGen AI generates a team of AI agents, each with a distinct role. During each turn of the group discussion, TeamGen AI evaluates the progress and assigns the most suitable agent to contribute. Once all agents have provided their expertise and the request is fully addressed, TeamGen AI engages the final answer writer to deliver the response to the user.
+Upon receiving a user request, TeamGen AI generates a team of AI agents, each with a distinct role. They were then assigned in turns to work collaborately in
+a group discussion. During each turn of the group discussion, TeamGen AI evaluates the progress and assigns the most suitable agent to contribute. Once all agents have provided their expertise and the request is fully addressed, TeamGen AI engages the final answer writer to deliver the response to the user.
 
 # Supported AI Backends
 
