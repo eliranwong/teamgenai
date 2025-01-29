@@ -1,3 +1,9 @@
+# UPDATE
+
+Further development of this project will be integrated as part of the following AI project:
+
+`toolmate-sdk` - https://github.com/eliranwong/toolmate-sdk
+
 # TeamGen AI
 
 TeamGen AI, developed by [Eliran Wong](https://github.com/eliranwong), automates the creation of AI agent teams to address user requests.
