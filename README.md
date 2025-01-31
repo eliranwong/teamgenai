@@ -1,3 +1,9 @@
+# UPDATES
+
+This project is now integrated as part of [AgentMake AI](https://github.com/eliranwong/agentmake)
+
+Please find further updates at: https://github.com/eliranwong/agentmake
+
 # TeamGen AI
 
 TeamGen AI, developed by [Eliran Wong](https://github.com/eliranwong), automates the creation of AI agent teams to address user requests.
