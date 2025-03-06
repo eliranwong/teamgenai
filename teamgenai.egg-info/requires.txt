@@ -1,0 +1,4 @@
+agentmake
+
+[genai]
+google-genai>=1.1.0

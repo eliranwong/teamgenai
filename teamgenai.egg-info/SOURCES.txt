@@ -1,0 +1,13 @@
+LICENSE
+README.md
+setup.py
+teamgenai/README.md
+teamgenai/config.py
+teamgenai/main.py
+teamgenai/requirements.txt
+teamgenai.egg-info/PKG-INFO
+teamgenai.egg-info/SOURCES.txt
+teamgenai.egg-info/dependency_links.txt
+teamgenai.egg-info/entry_points.txt
+teamgenai.egg-info/requires.txt
+teamgenai.egg-info/top_level.txt

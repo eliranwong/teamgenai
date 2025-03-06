@@ -1,3 +1,31 @@
+Metadata-Version: 2.1
+Name: teamgenai
+Version: 2.0.0
+Summary: TeamGen AI, developed by Eliran Wong, automates the creation of AI agent teams to address user requests.
+Home-page: https://github.com/eliranwong/teamgenai
+Author: Eliran Wong
+Author-email: support@toolmate.ai
+License: GNU General Public License (GPL)
+Project-URL: Source, https://github.com/eliranwong/teamgenai
+Project-URL: Tracker, https://github.com/eliranwong/teamgenai/issues
+Project-URL: Documentation, https://github.com/eliranwong/teamgenai/wiki
+Project-URL: Funding, https://www.paypal.me/toolmate
+Keywords: toolmate ai auto gen team agents chatgpt openai gemini mistral groq
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Topic :: Utilities
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.8, <3.13
+Provides-Extra: genai
+License-File: LICENSE
+
 # TeamGen AI
 
 TeamGen AI, developed by [Eliran Wong](https://github.com/eliranwong), automates the creation of AI agent teams to address user requests.

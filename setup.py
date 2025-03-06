@@ -35,7 +35,7 @@ open(os.path.join(package, "config.py"), "w").close()
 # https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/
 setup(
     name=package,
-    version="0.0.14",
+    version="2.0.0",
     python_requires=">=3.8, <3.13",
     description=f"TeamGen AI, developed by Eliran Wong, automates the creation of AI agent teams to address user requests.",
     long_description=long_description,
@@ -43,20 +43,18 @@ setup(
     author_email="support@toolmate.ai",
     packages=[
         package,
-        f"{package}.utils",
-        f"{package}.system",
-        f"{package}.system.core",
     ],
     package_data={
         package: ["*.*"],
-        f"{package}.utils": ["*.*"],
-        f"{package}.system": ["*.*"],
-        f"{package}.system.core": ["*.*"],
     },
     license="GNU General Public License (GPL)",
     install_requires=install_requires,
+    extras_require={
+        'genai': ["google-genai>=1.1.0"],  # Dependencies for running Vertex AI
+    },
     entry_points={
         "console_scripts": [
+            f"teamgenai={package}.main:main",
             f"tgai={package}.main:main",
         ],
     },

@@ -1,0 +1,3 @@
+[console_scripts]
+teamgenai = teamgenai.main:main
+tgai = teamgenai.main:main
